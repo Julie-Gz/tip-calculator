@@ -1,25 +1,17 @@
 'use strict'
-//Changing the colour of the reset button:
-//use the if statement; if there are values in the input fields then change the background colour to
-//strong cyan
-//On reset, change the values of the input fields, and results back to 0 and change the reset button 
-//background back to dark cyan
-//tip = bill * tip percentage
-//tip per person = (bill * tip percentage) / number of people
-//total per person = (bill / number of people) + tip per person
-//Error message will be displayed in the second label for each input field
-//if no number is entered or the value entered is invalid, display "Can't be zero"
-//add hidden class and display it to none. When the error occurs it will switch to inline-block
-//and the message will be displayed
-//values = +value.replace("%","")
-
 const bill = document.querySelector("#bill");
 const numberOfPeople = document.querySelector("#people");
 const tipPerson = document.querySelector(".tip");
 const totalPerson = document.querySelector(".total");
 const resetButton = document.querySelector("#reset");
-const calculateButton = document.querySelector("#calculate");
 const tipButton = document.querySelectorAll(".bill-tip-btn");
+
+//Variables for calculation
+let cash = 0;
+let tipPercentage = 0;
+let people = 0;
+let tp = 0; //tip
+let ttl = 0;//total
 
 //Reset
 resetButton.addEventListener("click", function(btn){
@@ -27,49 +19,79 @@ resetButton.addEventListener("click", function(btn){
     btn.target.style.color = "hsl(186, 14%, 43%)";
     tipPerson.textContent = "$0.00";
     totalPerson.textContent = "$0.00";
-    bill.value = 0;
-    numberOfPeople.value = 0;
+    bill.value = "";
+    numberOfPeople.value = "";
 })
 
     //Bill
-    let cash = 0;
     bill.addEventListener("input", ()=>{
         cash = Number(bill.value);
-        console.log(typeof cash, cash);
         return cash; 
     });
 
     //Tip
-    let tipPercentage = 0;
     tipButton.forEach(function(tipbtn){
         tipbtn.addEventListener("click", function(){
             if(tipbtn.classList.contains("custom")){  
                 this.addEventListener("input", function(){
                     tipPercentage = Number(tipbtn.value) / 100;
-                    console.log(typeof tipPercentage, tipPercentage);
                     return tipPercentage;
                 })    
             } else{
                 tipPercentage = Number((tipbtn.value.replace("%","")))/100;
-                console.log(typeof tipPercentage, tipPercentage);
                 return tipPercentage;
             }
         })
     })
 
-    let people = 0;
-    people = numberOfPeople.addEventListener("input", ()=> {
-        console.log(typeof people, people);
-        return Number(numberOfPeople.value);   
+    numberOfPeople.addEventListener("input", ()=> {
+        people = Number(numberOfPeople.value);
+        return people;   
     });
 
-const calcFunction = function(){
-    let tipPerPerson = tipPercentage/people;
-    let totalPerPerson = (cash + (cash * tipPercentage))/people;
-    console.log(typeof tipPerPerson, tipPerPerson);
-    console.log(typeof totalPerPerson, totalPerPerson);
-    //tipPerson.textContent = Number.isNaN(tipPercentage / people);
-    //totalPerson.textContent = Number.isNaN((cash + (cash * tipPercentage))/people);
-};
 
-calculateButton.addEventListener("click", calcFunction);
+//Calculation
+    document.addEventListener("input", function(){
+        //Calculating the total(ttl) and tip(tp)
+        ttl=(cash + (cash * tipPercentage))/people;
+        tp=(tipPercentage*cash) / people;
+
+        //Placed conditional statement to prevent NaN result
+        if(Number.isNaN(ttl) || Number.isNaN(tp)){
+            tipPerson.textContent = "$0.00";
+            totalPerson.textContent = "$0.00"
+        } else{
+            tipPerson.textContent = "$"+tp.toFixed(2);
+            totalPerson.textContent = "$"+ttl.toFixed(2);
+        }
+
+        //Changing the color and background color of the reset button 
+        resetButton.style.backgroundColor = "hsl(172, 67%, 45%)";
+        resetButton.style.color = "hsl(183, 100%, 15%)";
+    });
+
+
+  //Detect if the user deleted their input
+    // bill.onkeyup = function(val){
+    //     if(val.length==0){
+    //         document.querySelector(".bill-alert").style.opacity = 1;
+    //     }
+    // }
+    // numberOfPeople.onkeyup = function(n){
+    //     if(n.length==0){
+    //         document.querySelector(".people-alert").style.opacity = 1;
+    //     }
+    // }
+
+    // bill.addEventListener("keydown",(e)=>{
+    //     if(e.key === "Backspace" && cash.length == 0){
+    //         document.querySelector(".bill-alert").style.opacity = 1;
+    //         console.log(e);
+    //     } 
+    // })
+    //numberofPeople.addEventListener("keydown", (e)=>{
+        //if(e.key === "Backspace" && people.length == 0){
+            //document.querySelector(".people-alert").style.opacity = 1;
+            //console.log(e);
+        //} 
+    //})

@@ -150,7 +150,12 @@ span{
     z-index: 10;
 }
 
-.warning{
+.bill-alert{
+    opacity: 0;
+    color: orangered;
+}
+
+.people-alert{
     opacity: 0;
     color: orangered;
 }
@@ -181,35 +186,69 @@ span{
     font-weight: 700;
     font-size: 34px;
 }
-.action{
+
+#reset{
     position: absolute;
-    transform: translateX(19%);
+    right: 50%;
+    transform: translateX(50%);
     width: 60%;
     padding: 1rem 1.5rem;
     border: none;
     outline: none;
     font-weight: 700;
-    cursor: pointer;
-}
-
-#calculate{
-    bottom: 6rem;
-    background-color: var(--Strong-cyan);
-    color: var(--Very-dark-cyan);
-}
-
-#reset{
+    cursor: pointer; 
     bottom: 2rem;
     background-color: var(--Grayish-cyan);
     color: var(--Dark-grayish-cyan);
+    font-size: 1.2rem;
 }
 
 #reset:hover{
     background-color: var(--Strong-cyan);
     color: var(--Very-dark-cyan);
 }
+/* Media queries */
 
-#reset:active{
-    background-color: var(--Strong-cyan);
-    color: var(--Very-dark-cyan);
+@media screen and (min-width:320px) and (max-width:720px){
+    main{
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 100%;   
+    }
+
+    .bill-design{
+        margin-bottom: 0;
+    }
+
+    .bill-tip{
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+
+    .receipt-design{
+        margin-bottom: 1rem;
+    }
+
+    .title{
+        font-size: 0.7rem;
+    }
+
+    .receipt-design{
+        margin-bottom: 4rem;
+    }
+
+    .money{
+        font-size: 1.4rem;
+    }
+
+    #reset{
+        padding: 0.5rem 0.7rem;
+        font-size: 0.8rem;
+        bottom: 1rem;
+    }
+    
+    .attribution{
+        font-size: 0.7rem;
+        text-align: center;
+    }
 }
