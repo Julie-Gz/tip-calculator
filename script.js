@@ -18,7 +18,7 @@ const numberOfPeople = document.querySelector("#people");
 const tipPerson = document.querySelector(".tip");
 const totalPerson = document.querySelector(".total");
 const resetButton = document.querySelector("#reset");
-const calculateButton = document.querySelector("#calculator");
+const calculateButton = document.querySelector("#calculate");
 const tipButton = document.querySelectorAll(".bill-tip-btn");
 
 //Reset
@@ -32,30 +32,44 @@ resetButton.addEventListener("click", function(btn){
 })
 
     //Bill
-    const cash = bill.addEventListener("change", ()=>{
-        return Number(bill.value); 
+    let cash = 0;
+    bill.addEventListener("input", ()=>{
+        cash = Number(bill.value);
+        console.log(typeof cash, cash);
+        return cash; 
     });
 
     //Tip
-    let tipPercentage = tipButton.forEach(function(tipbtn){
+    let tipPercentage = 0;
+    tipButton.forEach(function(tipbtn){
         tipbtn.addEventListener("click", function(){
             if(tipbtn.classList.contains("custom")){  
-                this.addEventListener("change", function(){
-                    return Number(tipbtn.value/100);
+                this.addEventListener("input", function(){
+                    tipPercentage = Number(tipbtn.value) / 100;
+                    console.log(typeof tipPercentage, tipPercentage);
+                    return tipPercentage;
                 })    
             } else{
-                return Number((tipbtn.value.replace("%", ""))/100);
+                tipPercentage = Number((tipbtn.value.replace("%","")))/100;
+                console.log(typeof tipPercentage, tipPercentage);
+                return tipPercentage;
             }
         })
     })
 
-    const people = numberOfPeople.addEventListener("change", ()=> {
-        return Number(numberOfPeople.value);
+    let people = 0;
+    people = numberOfPeople.addEventListener("input", ()=> {
+        console.log(typeof people, people);
+        return Number(numberOfPeople.value);   
     });
 
 const calcFunction = function(){
-    tipPerson.textContent = String(tipPercentage / people);
-    totalPerson.textContent = String((cash + (cash * tipPercentage))/people);
+    let tipPerPerson = tipPercentage/people;
+    let totalPerPerson = (cash + (cash * tipPercentage))/people;
+    console.log(typeof tipPerPerson, tipPerPerson);
+    console.log(typeof totalPerPerson, totalPerPerson);
+    //tipPerson.textContent = Number.isNaN(tipPercentage / people);
+    //totalPerson.textContent = Number.isNaN((cash + (cash * tipPercentage))/people);
 };
 
 calculateButton.addEventListener("click", calcFunction);
